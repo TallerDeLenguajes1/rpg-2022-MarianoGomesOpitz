@@ -4,14 +4,15 @@ namespace RPG
     {
         private string tipo, nombre, apodo;
         private DateOnly fechaNac;
-        private int edad, salud;
+        private int edad;
+        private double salud;
 
         public string Tipo { get => tipo; set => tipo = value; }
         public string Nombre { get => nombre; set => nombre = value; }
         public string Apodo { get => apodo; set => apodo = value; }
         public DateOnly FechaNac { get => fechaNac; set => fechaNac = value; }
         public int Edad { get => edad; set => edad = value; } // 0 - 300
-        public int Salud { get => salud; set => salud = value; } // 100
+        public double Salud { get => salud; set => salud = value; } // 100
 
         public Datos()
         {
@@ -24,7 +25,7 @@ namespace RPG
             tipo = tipoDispo[rand.Next(0, tipoDispo.Length)];
             nombre = nombreDispo[rand.Next(0, nombreDispo.Length)];
             apodo = apodoDispo[rand.Next(0, apodoDispo.Length)];
-            fechaNac = new DateOnly(rand.Next(1723, 2023), rand.Next(1, 13), rand.Next(1, 32));
+            fechaNac = new DateOnly(rand.Next(1723, 2023), rand.Next(1, 13), rand.Next(1, 29));
             edad = DateTime.Now.Year - fechaNac.Year;
             if (fechaNac.Month > DateTime.Now.Month)
             {
