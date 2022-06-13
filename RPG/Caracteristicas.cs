@@ -2,13 +2,13 @@ namespace RPG
 {
     public class Caracteristicas
     {
-        private double velocidad, destreza, fuerza, nivel, armadura;
+        private int velocidad, destreza, fuerza, nivel, armadura;
 
-        public double Velocidad { get => velocidad; set => velocidad = value; } // 1 - 10
-        public double Destreza { get => destreza; set => destreza = value; } // 1 - 5
-        public double Fuerza { get => fuerza; set => fuerza = value; } // 1 - 10
-        public double Nivel { get => nivel; set => nivel = value; } // 1 - 10
-        public double Armadura { get => armadura; set => armadura = value; } // 1 - 10
+        public int Velocidad { get => velocidad; set => velocidad = value; } // 1 - 10
+        public int Destreza { get => destreza; set => destreza = value; } // 1 - 5
+        public int Fuerza { get => fuerza; set => fuerza = value; } // 1 - 10
+        public int Nivel { get => nivel; set => nivel = value; } // 1 - 10
+        public int Armadura { get => armadura; set => armadura = value; } // 1 - 10
 
         public Caracteristicas()
         {

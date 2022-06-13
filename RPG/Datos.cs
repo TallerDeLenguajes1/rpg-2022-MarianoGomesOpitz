@@ -5,14 +5,14 @@ namespace RPG
         private string tipo, nombre, apodo;
         private DateOnly fechaNac;
         private int edad;
-        private double salud;
+        private int salud;
 
         public string Tipo { get => tipo; set => tipo = value; }
         public string Nombre { get => nombre; set => nombre = value; }
         public string Apodo { get => apodo; set => apodo = value; }
         public DateOnly FechaNac { get => fechaNac; set => fechaNac = value; }
         public int Edad { get => edad; set => edad = value; } // 0 - 300
-        public double Salud { get => salud; set => salud = value; } // 100
+        public int Salud { get => salud; set => salud = value; } // 100
 
         public Datos()
         {

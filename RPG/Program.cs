@@ -14,8 +14,34 @@ namespace RPG
             var pj = new Personaje(carac, datos);
             listaPj.Add(pj);
 
+            Console.WriteLine("\nEl número de peleas se designará aleatoriamente entre 1 y 10. \nEn las peleas, cada atacante podrá atacar y defender 3 veces, al finalizar cada uno con sus acciones. \nGanará aquel que posea más vida, si ambos luchadores poseen la misma cantidad de vida, la misma se repetirá hasta que uno de los caiga");
+
             int peleas = rand.Next(1, 11), empate = 0; //Ingreso la cantidad de peleas que habrá
-            Console.WriteLine($"Cantidad de peleas que habrá: {peleas}");
+            Console.WriteLine($"\nCantidad de peleas que habrá: {peleas}");
+
+            ProcesoDePelea(rand, listaPj, ref carac, ref datos, ref pj, ref peleas, ref empate);
+
+            Ganador(listaPj);
+        }
+
+        private static void Ganador(List<Personaje> listaPj)
+        {
+            Console.WriteLine("\n//--------------------Ganador definitivo--------------------//"); //Muestro al personaje que logró sobrevivir
+            Console.WriteLine($"Tipo de personaje: {listaPj[0].Dat.Tipo}");
+            Console.WriteLine($"Nombre del personaje: {listaPj[0].Dat.Nombre}");
+            Console.WriteLine($"Apodo del personaje: {listaPj[0].Dat.Apodo}");
+            Console.WriteLine($"Fecha de nacimiento: {listaPj[0].Dat.FechaNac}");
+            Console.WriteLine($"Edad: {listaPj[0].Dat.Edad}");
+            Console.WriteLine($"Salud: {listaPj[0].Dat.Salud}");
+            Console.WriteLine($"Velocidad: {listaPj[0].Car.Velocidad}");
+            Console.WriteLine($"Destreza: {listaPj[0].Car.Destreza}");
+            Console.WriteLine($"Fuerza: {listaPj[0].Car.Fuerza}");
+            Console.WriteLine($"Nivel: {listaPj[0].Car.Nivel}");
+            Console.WriteLine($"Armadura: {listaPj[0].Car.Armadura}");
+        }
+
+        private static void ProcesoDePelea(Random rand, List<Personaje> listaPj, ref Caracteristicas carac, ref Datos datos, ref Personaje pj, ref int peleas, ref int empate)
+        {
             while (peleas > 0)
             {
                 if (empate == 0) //Me aseguro que no la pelea anterior no haya sido empate para no cargar otro personaje
@@ -25,20 +51,25 @@ namespace RPG
                     pj = new Personaje(carac, datos);
                     listaPj.Add(pj);
                 }
-
-                Console.WriteLine("\nPersonajes a luchar:"); //Muestro la información relevante de los personajes a luchar
-                foreach (var item in listaPj)
+                else
                 {
-                    Console.WriteLine("\nTipo de personaje: {0}", item.Dat.Tipo);
-                    Console.WriteLine("Nombre del personaje: {0}", item.Dat.Nombre);
-                    Console.WriteLine("Apodo del personaje: {0}", item.Dat.Apodo);
-                    Console.WriteLine("Salud: {0}", item.Dat.Salud);
+                    Console.WriteLine("\n/----------La pelea ha acabado en empate, la misma debe repetirse----------/");
+                    peleas++;
                 }
 
-                Console.WriteLine("\n\nPresione para iniciar la pelea"); //Ingresar algo para iniciar la pelea, dando tiempo para ver la información de los personajes
+                Console.WriteLine("\n\nPersonajes a luchar:"); //Muestro la información relevante de los personajes a luchar
+                foreach (var item in listaPj)
+                {
+                    Console.WriteLine($"\nTipo de personaje: {item.Dat.Tipo}");
+                    Console.WriteLine($"Nombre del personaje: {item.Dat.Nombre}");
+                    Console.WriteLine($"Apodo del personaje: {item.Dat.Apodo}");
+                }
+
+                Console.WriteLine("\nPresione para iniciar la pelea"); //Ingresar algo para iniciar la pelea, dando tiempo para ver la información de los personajes
                 char p = Console.ReadKey().KeyChar;
                 Console.WriteLine("\n");
                 var f = new Funciones();
+                Console.WriteLine("\n/---------------Pelea en proceso---------------/");
                 for (int i = 0; i < 3; i++)
                 {
                     f.procesoDeAtaque(listaPj[0], listaPj[1]); //Primero ataca uno y luego ataca otro
@@ -56,8 +87,7 @@ namespace RPG
 
                 if (listaPj[0].Dat.Salud == listaPj[1].Dat.Salud) //Determino al ganador
                 {
-                    Console.WriteLine("\nEmpate"); //Si fue un empate, la pelea se repetirá
-                    empate = 1;
+                    empate = 1;//Si fue un empate, la pelea se repetirá
                 }
                 else
                 {
@@ -72,19 +102,20 @@ namespace RPG
 
                     foreach (var item in listaPj) //Muestro quién es el que ganó la pelea
                     {
-                        Console.WriteLine("\n\nGanador de la pelea: {0}", item.Dat.Apodo);
+                        Console.WriteLine($"\n\n/----------Ganador de la pelea: {item.Dat.Apodo}----------/");
+                        item.Dat.Salud = 100;
                         int chance = rand.Next(2);
-                        double bonus = 0;
+                        float bonus = 0;
                         if (chance == 0) //Decido que bonus darle al ganador
                         {
                             bonus = 10;
-                            item.Dat.Salud += bonus; //Le doy un bonus de vida
+                            item.Dat.Salud += Convert.ToInt32(bonus); //Le doy un bonus de vida
                             Console.WriteLine("{0} ha ganado +{1} de salud", item.Dat.Apodo, bonus);
                         }
                         else
                         {
                             bonus = rand.Next(5, 11);
-                            item.Car.Fuerza += bonus / item.Car.Fuerza; //Le doy un bonus de fuerza
+                            item.Car.Fuerza += Convert.ToInt32(bonus / item.Car.Fuerza); //Le doy un bonus de fuerza
                             Console.WriteLine("{0} ha ganado un {1}% en fuerza", item.Dat.Apodo, bonus);
                         }
                     }
@@ -92,30 +123,21 @@ namespace RPG
                 }
                 peleas--;
             }
-
-            Console.WriteLine("\nGanador definitivo:"); //Muestro al personaje que logró sobrevivir
-            Console.WriteLine("Tipo de personaje: {0}", listaPj[0].Dat.Tipo);
-            Console.WriteLine("Apodo del personaje: {0}", listaPj[0].Dat.Apodo);
-            Console.WriteLine("Salud: {0}", listaPj[0].Dat.Salud);
-            Console.WriteLine("Velocidad: {0}", listaPj[0].Car.Velocidad);
-            Console.WriteLine("Destreza: {0}", listaPj[0].Car.Destreza);
-            Console.WriteLine("Fuerza: {0}", listaPj[0].Car.Fuerza);
-            Console.WriteLine("Nivel: {0}", listaPj[0].Car.Nivel);
-            Console.WriteLine("Armadura: {0}", listaPj[0].Car.Armadura);
         }
+
         public class Funciones
         {
             public void procesoDeAtaque(Personaje atacante, Personaje defensor) //Cálculos que hacen posible un ataque
             {
-                Console.WriteLine($"\nAtacante: {atacante.Dat.Apodo}. Defensor: {defensor.Dat.Apodo}");
+                Console.WriteLine($"\nAtacante: {atacante.Dat.Apodo} \nDefensor: {defensor.Dat.Apodo}");
                 var rand = new Random();
 
-                double PD = atacante.Car.Destreza * atacante.Car.Fuerza * atacante.Car.Nivel; //Poder de disparo
-                double ED = rand.Next(1, 101); //Efectividad de disparo
-                double VA = PD * ED; //Valor de ataque
-                double PDEF = defensor.Car.Armadura * defensor.Car.Velocidad; //Poder de defensa
-                double MDP = 50000; //Máximo daño provocable
-                double DP = (((VA * ED) - PDEF) / MDP) * 100; //Daño provocado
+                float PD = atacante.Car.Destreza * atacante.Car.Fuerza * atacante.Car.Nivel; //Poder de disparo
+                float ED = rand.Next(1, 101); //Efectividad de disparo
+                float VA = PD * ED; //Valor de ataque
+                float PDEF = defensor.Car.Armadura * defensor.Car.Velocidad; //Poder de defensa
+                float MDP = 50000; //Máximo daño provocable
+                int DP = Convert.ToInt32((((VA * ED) - PDEF) / MDP) * 5); //Daño provocado
 
                 Console.WriteLine($"Daño ejercido por {atacante.Dat.Apodo}: {DP}");
                 defensor.Dat.Salud -= DP;
