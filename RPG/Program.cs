@@ -14,7 +14,7 @@ namespace RPG
             {
 
                 Console.WriteLine("\n¿Desea ver la lista de ganadores previos, llevar a cabo unas batallas, o finalizar el programa? \n\"L\" para ver la lista, \"F\" para finalizar, o cualquier otro caracter para pelear");
-                char pel = Console.ReadKey().KeyChar;
+                char pel = Console.ReadLine()[0];
 
                 if (pel == 'l' || pel == 'L')
                 {
@@ -96,19 +96,18 @@ namespace RPG
                 }
 
                 Console.WriteLine("\nPresione para iniciar la pelea"); //Ingresar algo para iniciar la pelea, dando tiempo para ver la información de los personajes
-                char p = Console.ReadKey().KeyChar;
+                char p = Console.ReadLine()[0];;
                 Console.WriteLine("\n");
-                var f = new Funciones();
                 Console.WriteLine("\n/---------------Pelea en proceso---------------/");
                 for (int i = 0; i < 3; i++)
                 {
-                    f.procesoDeAtaque(listaPj[0], listaPj[1]); //Primero ataca uno y luego ataca otro
+                    Funciones.procesoDeAtaque(listaPj[0], listaPj[1]); //Primero ataca uno y luego ataca otro
                     if (listaPj[1].Dat.Salud <= 0) //Al finalizar un ataque, pregunto si el defensor quedó con la vida al cero, para detener la batalla
                     {
                         break;
                     }
 
-                    f.procesoDeAtaque(listaPj[1], listaPj[0]);
+                    Funciones.procesoDeAtaque(listaPj[1], listaPj[0]);
                     if (listaPj[0].Dat.Salud <= 0)
                     {
                         break;
@@ -155,9 +154,9 @@ namespace RPG
             }
         }
 
-        public class Funciones
+        static class Funciones
         {
-            public void procesoDeAtaque(Personaje atacante, Personaje defensor) //Cálculos que hacen posible un ataque
+            public static void procesoDeAtaque(Personaje atacante, Personaje defensor) //Cálculos que hacen posible un ataque
             {
                 Console.WriteLine($"\nAtacante: {atacante.Dat.Apodo} \nDefensor: {defensor.Dat.Apodo}");
                 var rand = new Random();
