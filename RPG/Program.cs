@@ -7,9 +7,8 @@ namespace RPG
 {
     internal class Program
     {
-        
-        
-        
+
+        ///////////////////////////////////////////////////////////////////////////////////////Programa principal
         static void Main(string[] args)
         {
             string archivoGanadores = "ganadores.csv", archivoJugadores = "jugadores.json";
@@ -43,11 +42,18 @@ namespace RPG
             } while (true);
         }
 
+
+        ///////////////////////////////////////////////////////////////////////////////////////Se eligió pelear
         private static void EleccionPelea(string archivoGanadores, Random rand, char guardar, string archivoJugadores)
         {
             var listaPj = new List<Personaje>(); //Agrego al primer personaje
-            var pj = new Personaje();
+            Personaje pj;
+
+            Console.WriteLine("\nElección del primer personaje");
+            pj = EleccionOCreacionPersonaje(archivoJugadores);
+
             listaPj.Add(pj);
+
 
             var listaJugadores = new List<Personaje>();
             if (guardar == 'g' || guardar == 'G')
@@ -60,12 +66,16 @@ namespace RPG
             int peleas = rand.Next(1, 11), empate = 0; //Ingreso la cantidad de peleas que habrá
             Console.WriteLine($"\nCantidad de peleas que habrá: {peleas}");
 
-            ProcesoDePelea(rand, listaPj, ref pj, ref peleas, ref empate, guardar, listaJugadores);
+            ProcesoDePelea(rand, listaPj, ref peleas, ref empate, guardar, listaJugadores, archivoJugadores);
 
             Ganador(listaPj, archivoGanadores);
 
             if ((guardar == 'g' || guardar == 'G') && listaJugadores != null)
             {
+                foreach (var item in listaJugadores)
+                {
+                    item.Dat.Salud = 100;
+                }
                 string textoJugadores = JsonSerializer.Serialize(listaJugadores);
                 var escribirJson = new StreamWriter(File.Open(archivoJugadores, FileMode.Create));
                 escribirJson.WriteLine(textoJugadores);
@@ -73,6 +83,58 @@ namespace RPG
             }
         }
 
+
+        ///////////////////////////////////////////////////////////////////////////////////////Se decide si se crea o se elige un personaje
+        private static Personaje EleccionOCreacionPersonaje(string archivoJugadores)
+        {
+            Personaje pj;
+            Console.WriteLine("¿Desea crear un nuevo personaje o elegir uno?");
+            Console.WriteLine("\"E\" para elegir uno o cualquier otro caracter para crear uno nuevo");
+            char elegir = Console.ReadLine()[0];
+            if (elegir == 'E' || elegir == 'e')
+            {
+                string textoJugadores = File.ReadAllText(archivoJugadores);
+                var infoJugadores = JsonSerializer.Deserialize<List<Personaje>>(textoJugadores);
+
+                if (infoJugadores.Count > 0)
+                {
+                    Console.WriteLine("\nPersonajes disponibles:");
+                    foreach (var item in infoJugadores)
+                    {
+                        Console.WriteLine($"\nNombre del personaje: {item.Dat.Nombre}");
+                        Console.WriteLine($"Apodo del personaje: {item.Dat.Apodo}");
+                        Console.WriteLine($"Tipo de personaje: {item.Dat.Tipo}");
+                        Console.WriteLine($"Fecha de nacimiento: {item.Dat.FechaNac}");
+                        Console.WriteLine($"Edad: {item.Dat.Edad}");
+                        Console.WriteLine($"Salud: {item.Dat.Salud}");
+                        Console.WriteLine($"Velocidad: {item.Car.Velocidad}");
+                        Console.WriteLine($"Destreza: {item.Car.Destreza}");
+                        Console.WriteLine($"Fuerza: {item.Car.Fuerza}");
+                        Console.WriteLine($"Nivel: {item.Car.Nivel}");
+                        Console.WriteLine($"Armadura: {item.Car.Armadura}");
+                    }
+
+                    Console.WriteLine($"\nElija uno del 1 al {infoJugadores.Count}");
+                    int eleccion = Convert.ToInt32(Console.ReadLine());
+                    pj = infoJugadores[eleccion - 1];
+                }
+                else
+                {
+                    Console.WriteLine("\nNo hay personajes disponibles para elegir, se procederá a crear uno nuevo");
+                    pj = new Personaje();
+                }
+
+            }
+            else
+            {
+                pj = new Personaje();
+            }
+
+            return pj;
+        }
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////Leo y muestro el archivo de los ganadores
         private static void LeerArchivo(string archivoGanadores)
         {
             var leer = new StreamReader(File.Open(archivoGanadores, FileMode.Open));
@@ -80,6 +142,8 @@ namespace RPG
             leer.Close();
         }
 
+
+        ///////////////////////////////////////////////////////////////////////////////////////Muestro al ganador de la batalla y lo guardo en el archivo de los ganadores
         private static void Ganador(List<Personaje> listaPj, string archivoGanadores)
         {
             Console.WriteLine("\n//--------------------Ganador definitivo--------------------//"); //Muestro al personaje que logró sobrevivir
@@ -103,16 +167,21 @@ namespace RPG
 
         }
 
-        private static void ProcesoDePelea(Random rand, List<Personaje> listaPj, ref Personaje pj, ref int peleas, ref int empate, char guardar, List<Personaje> listaJugadores)
+
+        ///////////////////////////////////////////////////////////////////////////////////////El proceso entero de las batallas
+        private static void ProcesoDePelea(Random rand, List<Personaje> listaPj, ref int peleas, ref int empate, char guardar, List<Personaje> listaJugadores, string archivoJugadores)
         {
             while (peleas > 0)
             {
                 if (empate == 0) //Me aseguro que no la pelea anterior no haya sido empate para no cargar otro personaje
                 {
-                    pj = new Personaje();
+                    Personaje pj;
+
+                    pj = EleccionOCreacionPersonaje(archivoJugadores);
+
                     listaPj.Add(pj);
 
-                    if ((guardar == 'g' || guardar == 'G') && listaJugadores != null)
+                    if (guardar == 'g' || guardar == 'G')
                     {
                         listaJugadores.Add(pj);
                     }
@@ -192,6 +261,8 @@ namespace RPG
 
         static class Funciones
         {
+
+            ///////////////////////////////////////////////////////////////////////////////////////Cada ataque independiente
             public static void procesoDeAtaque(Personaje atacante, Personaje defensor) //Cálculos que hacen posible un ataque
             {
                 Console.WriteLine($"\nAtacante: {atacante.Dat.Apodo} \nDefensor: {defensor.Dat.Apodo}");
