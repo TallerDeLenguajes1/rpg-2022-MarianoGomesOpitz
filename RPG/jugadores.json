@@ -1,0 +1,172 @@
+[
+    {
+        "Car": {
+            "Velocidad": 8,
+            "Destreza": 2,
+            "Fuerza": 5,
+            "Nivel": 4,
+            "Armadura": 3
+        },
+        "Dat": {
+            "Tipo": "Spy",
+            "Nombre": "Urma",
+            "Apodo": "War Dog",
+            "FechaNac": "27/1/1895",
+            "Edad": 127,
+            "Salud": 56
+        }
+    },
+    {
+        "Car": {
+            "Velocidad": 1,
+            "Destreza": 2,
+            "Fuerza": 11,
+            "Nivel": 1,
+            "Armadura": 2
+        },
+        "Dat": {
+            "Tipo": "Engineer",
+            "Nombre": "Nahuel",
+            "Apodo": "Purple Sun",
+            "FechaNac": "11/10/1872",
+            "Edad": 149,
+            "Salud": 58
+        }
+    },
+    {
+        "Car": {
+            "Velocidad": 9,
+            "Destreza": 2,
+            "Fuerza": 7,
+            "Nivel": 9,
+            "Armadura": 7
+        },
+        "Dat": {
+            "Tipo": "Spy",
+            "Nombre": "Urma",
+            "Apodo": "Purple Sun",
+            "FechaNac": "3/7/1985",
+            "Edad": 36,
+            "Salud": -18
+        }
+    },
+    {
+        "Car": {
+            "Velocidad": 9,
+            "Destreza": 4,
+            "Fuerza": 1,
+            "Nivel": 9,
+            "Armadura": 3
+        },
+        "Dat": {
+            "Tipo": "Heavy",
+            "Nombre": "Sabrina",
+            "Apodo": "Anger",
+            "FechaNac": "12/2/1910",
+            "Edad": 112,
+            "Salud": 12
+        }
+    },
+    {
+        "Car": {
+            "Velocidad": 8,
+            "Destreza": 1,
+            "Fuerza": 6,
+            "Nivel": 2,
+            "Armadura": 9
+        },
+        "Dat": {
+            "Tipo": "Medic",
+            "Nombre": "Daniela",
+            "Apodo": "Anger",
+            "FechaNac": "22/2/1830",
+            "Edad": 192,
+            "Salud": 85
+        }
+    },
+    {
+        "Car": {
+            "Velocidad": 8,
+            "Destreza": 3,
+            "Fuerza": 5,
+            "Nivel": 9,
+            "Armadura": 6
+        },
+        "Dat": {
+            "Tipo": "Pyro",
+            "Nombre": "Gerardo",
+            "Apodo": "Atomic Apple",
+            "FechaNac": "9/7/1912",
+            "Edad": 109,
+            "Salud": 29
+        }
+    },
+    {
+        "Car": {
+            "Velocidad": 6,
+            "Destreza": 1,
+            "Fuerza": 9,
+            "Nivel": 10,
+            "Armadura": 10
+        },
+        "Dat": {
+            "Tipo": "Medic",
+            "Nombre": "Ignacio",
+            "Apodo": "Guts Destructor",
+            "FechaNac": "22/12/1984",
+            "Edad": 37,
+            "Salud": 0
+        }
+    },
+    {
+        "Car": {
+            "Velocidad": 9,
+            "Destreza": 1,
+            "Fuerza": 4,
+            "Nivel": 6,
+            "Armadura": 7
+        },
+        "Dat": {
+            "Tipo": "Heavy",
+            "Nombre": "Tom\u00E1s",
+            "Apodo": "Ego Monster",
+            "FechaNac": "8/5/1992",
+            "Edad": 30,
+            "Salud": 26
+        }
+    },
+    {
+        "Car": {
+            "Velocidad": 2,
+            "Destreza": 4,
+            "Fuerza": 10,
+            "Nivel": 4,
+            "Armadura": 9
+        },
+        "Dat": {
+            "Tipo": "Sniper",
+            "Nombre": "Sabrina",
+            "Apodo": "Guts Destructor",
+            "FechaNac": "17/8/1880",
+            "Edad": 141,
+            "Salud": 100
+        }
+    },
+    {
+        "Car": {
+            "Velocidad": 1,
+            "Destreza": 4,
+            "Fuerza": 3,
+            "Nivel": 7,
+            "Armadura": 8
+        },
+        "Dat": {
+            "Tipo": "Soldier",
+            "Nombre": "Sabrina",
+            "Apodo": "Anger",
+            "FechaNac": "15/3/1848",
+            "Edad": 174,
+            "Salud": -19
+        }
+    }
+]

@@ -1,14 +1,18 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System;
 using System.IO;
+using System.Text.Json;
 
 namespace RPG
 {
     internal class Program
     {
+        
+        
+        
         static void Main(string[] args)
         {
-            string archivoGanadores = "ganadores.csv";
+            string archivoGanadores = "ganadores.csv", archivoJugadores = "jugadores.json";
 
             var rand = new Random();
 
@@ -30,28 +34,43 @@ namespace RPG
                     }
                     else
                     {
-                        EleccionPelea(archivoGanadores, rand);
+                        Console.WriteLine("\nAntes de iniciar la pelea ¿Desea guardar la información de los luchadores?");
+                        Console.WriteLine("\"G\" para guardar o cualquier otro caracter para no hacerlo");
+                        char guardar = Console.ReadLine()[0];
+                        EleccionPelea(archivoGanadores, rand, guardar, archivoJugadores);
                     }
                 }
             } while (true);
         }
 
-        private static void EleccionPelea(string archivoGanadores, Random rand)
+        private static void EleccionPelea(string archivoGanadores, Random rand, char guardar, string archivoJugadores)
         {
             var listaPj = new List<Personaje>(); //Agrego al primer personaje
-            var carac = new Caracteristicas();
-            var datos = new Datos();
-            var pj = new Personaje(carac, datos);
+            var pj = new Personaje();
             listaPj.Add(pj);
+
+            var listaJugadores = new List<Personaje>();
+            if (guardar == 'g' || guardar == 'G')
+            {
+                listaJugadores.Add(pj);
+            }
 
             Console.WriteLine("\nEl número de peleas se designará aleatoriamente entre 1 y 10. \nEn las peleas, cada atacante podrá atacar y defender 3 veces, al finalizar cada uno con sus acciones. \nGanará aquel que posea más vida, si ambos luchadores poseen la misma cantidad de vida, la misma se repetirá hasta que uno de los caiga");
 
             int peleas = rand.Next(1, 11), empate = 0; //Ingreso la cantidad de peleas que habrá
             Console.WriteLine($"\nCantidad de peleas que habrá: {peleas}");
 
-            ProcesoDePelea(rand, listaPj, ref carac, ref datos, ref pj, ref peleas, ref empate);
+            ProcesoDePelea(rand, listaPj, ref pj, ref peleas, ref empate, guardar, listaJugadores);
 
             Ganador(listaPj, archivoGanadores);
+
+            if ((guardar == 'g' || guardar == 'G') && listaJugadores != null)
+            {
+                string textoJugadores = JsonSerializer.Serialize(listaJugadores);
+                var escribirJson = new StreamWriter(File.Open(archivoJugadores, FileMode.Create));
+                escribirJson.WriteLine(textoJugadores);
+                escribirJson.Close();
+            }
         }
 
         private static void LeerArchivo(string archivoGanadores)
@@ -80,18 +99,23 @@ namespace RPG
             string texto = $"Nombre: {listaPj[0].Dat.Nombre}, Apodo: {listaPj[0].Dat.Apodo}, Tipo de personaje: {listaPj[0].Dat.Tipo}, Fecha de nacimiento: {listaPj[0].Dat.FechaNac}, Momento en el que se llevó la batalla: {DateTime.Now}";
             escribir.WriteLine(texto);
             escribir.Close();
+
+
         }
 
-        private static void ProcesoDePelea(Random rand, List<Personaje> listaPj, ref Caracteristicas carac, ref Datos datos, ref Personaje pj, ref int peleas, ref int empate)
+        private static void ProcesoDePelea(Random rand, List<Personaje> listaPj, ref Personaje pj, ref int peleas, ref int empate, char guardar, List<Personaje> listaJugadores)
         {
             while (peleas > 0)
             {
                 if (empate == 0) //Me aseguro que no la pelea anterior no haya sido empate para no cargar otro personaje
                 {
-                    carac = new Caracteristicas(); //Agrego otro personaje para luchar
-                    datos = new Datos();
-                    pj = new Personaje(carac, datos);
+                    pj = new Personaje();
                     listaPj.Add(pj);
+
+                    if ((guardar == 'g' || guardar == 'G') && listaJugadores != null)
+                    {
+                        listaJugadores.Add(pj);
+                    }
                 }
                 else
                 {
@@ -108,7 +132,7 @@ namespace RPG
                 }
 
                 Console.WriteLine("\nPresione para iniciar la pelea"); //Ingresar algo para iniciar la pelea, dando tiempo para ver la información de los personajes
-                char p = Console.ReadLine()[0]; ;
+                char p = Console.ReadKey().KeyChar; ;
                 Console.WriteLine("\n");
                 Console.WriteLine("\n/---------------Pelea en proceso---------------/");
                 for (int i = 0; i < 3; i++)

@@ -2,18 +2,16 @@ namespace RPG
 {
     public class Personaje
     {
-        private Caracteristicas car;
         private Datos dat;
+        private Caracteristicas car;
 
-        public Caracteristicas Car { get => car; set => car = value; }
         public Datos Dat { get => dat; set => dat = value; }
+        public Caracteristicas Car { get => car; set => car = value; }
 
-        public Personaje() { }
-
-        public Personaje(Caracteristicas car, Datos dat)
-        {
-            this.Car = car;
-            this.Dat = dat;
+        public Personaje() {
+            this.Dat = new Datos();
+            this.Car = new Caracteristicas();
         }
+
     }
 }
