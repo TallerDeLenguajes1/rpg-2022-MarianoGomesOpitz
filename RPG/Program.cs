@@ -18,8 +18,11 @@ namespace RPG
             var rand = new Random();
 
             RootNames names = null;
-            names = NombresApi(names);//Creación de la clase de la Api
-
+            names = NombresApi(names);
+            //Creación de la clase de la Api
+            //Decido crearla ya, para que no me de inconvenientes por si se hace más de una pelea
+            //Así que la clase tendrá 30 nombres en total (se puede cambiar la cantidad, y otras cosas modificando el link), reduciendo la posibilidad de que se repita alguno
+            //Link dentro de la función
             do
             {
 
@@ -50,7 +53,7 @@ namespace RPG
         private static RootNames NombresApi(RootNames names)
         {
             string url = $"https://randomuser.me/api/?inc=name&?page=1&results=30&noinfo&?nat=us,%20es,%20nz,%20au,%20fr,%20fi";
-
+            //Fuente de la api: https://randomuser.me/
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
             request.ContentType = "application/json";
