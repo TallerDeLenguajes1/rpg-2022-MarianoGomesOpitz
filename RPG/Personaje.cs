@@ -9,7 +9,10 @@ namespace RPG
         public Caracteristicas Car { get => car; set => car = value; }
 
         public Personaje() {
-            this.Dat = new Datos();
+        }
+
+        public Personaje(RootNames names) { //Envío de clase
+            this.Dat = new Datos(names);
             this.Car = new Caracteristicas();
         }
 

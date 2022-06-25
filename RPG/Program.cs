@@ -2,6 +2,8 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Net;
 
 namespace RPG
 {
@@ -14,6 +16,9 @@ namespace RPG
             string archivoGanadores = "ganadores.csv", archivoJugadores = "jugadores.json";
 
             var rand = new Random();
+
+            RootNames names = null;
+            names = NombresApi(names);//Creación de la clase de la Api
 
             do
             {
@@ -36,21 +41,60 @@ namespace RPG
                         Console.WriteLine("\nAntes de iniciar la pelea ¿Desea guardar la información de los luchadores?");
                         Console.WriteLine("\"G\" para guardar o cualquier otro caracter para no hacerlo");
                         char guardar = Console.ReadLine()[0];
-                        EleccionPelea(archivoGanadores, rand, guardar, archivoJugadores);
+                        EleccionPelea(archivoGanadores, rand, guardar, archivoJugadores, names);
                     }
                 }
             } while (true);
         }
 
+        private static RootNames NombresApi(RootNames names)
+        {
+            string url = $"https://randomuser.me/api/?inc=name&?page=1&results=30&noinfo&?nat=us,%20es,%20nz,%20au,%20fr,%20fi";
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            request.Accept = "application/json";
+
+            try
+            {
+                using (WebResponse response = request.GetResponse())
+                {
+                    using (Stream strReader = response.GetResponseStream())
+                    {
+                        if (strReader != null)
+                        {
+                            using (StreamReader objReader = new StreamReader(strReader))
+                            {
+                                string texto = objReader.ReadToEnd();
+
+                                names = JsonSerializer.Deserialize<RootNames>(texto);
+
+
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+
+            return names;
+        }
+
 
         ///////////////////////////////////////////////////////////////////////////////////////Se eligió pelear
-        private static void EleccionPelea(string archivoGanadores, Random rand, char guardar, string archivoJugadores)
+        private static void EleccionPelea(string archivoGanadores, Random rand, char guardar, string archivoJugadores, RootNames names)
         {
             var listaPj = new List<Personaje>(); //Agrego al primer personaje
             Personaje pj;
 
             Console.WriteLine("\nElección del primer personaje");
-            pj = EleccionOCreacionPersonaje(archivoJugadores);
+            pj = EleccionOCreacionPersonaje(archivoJugadores, names);
 
             listaPj.Add(pj);
 
@@ -66,7 +110,7 @@ namespace RPG
             int peleas = rand.Next(1, 11), empate = 0; //Ingreso la cantidad de peleas que habrá
             Console.WriteLine($"\nCantidad de peleas que habrá: {peleas}");
 
-            ProcesoDePelea(rand, listaPj, ref peleas, ref empate, guardar, listaJugadores, archivoJugadores);
+            ProcesoDePelea(rand, listaPj, ref peleas, ref empate, guardar, listaJugadores, archivoJugadores, names);
 
             Ganador(listaPj, archivoGanadores);
 
@@ -85,7 +129,7 @@ namespace RPG
 
 
         ///////////////////////////////////////////////////////////////////////////////////////Se decide si se crea o se elige un personaje
-        private static Personaje EleccionOCreacionPersonaje(string archivoJugadores)
+        private static Personaje EleccionOCreacionPersonaje(string archivoJugadores, RootNames names)
         {
             Personaje pj;
             Console.WriteLine("¿Desea crear un nuevo personaje o elegir uno?");
@@ -121,13 +165,13 @@ namespace RPG
                 else
                 {
                     Console.WriteLine("\nNo hay personajes disponibles para elegir, se procederá a crear uno nuevo");
-                    pj = new Personaje();
+                    pj = new Personaje(names);
                 }
 
             }
             else
             {
-                pj = new Personaje();
+                pj = new Personaje(names);//Tengo que enviar la clase para ver que nombre le tocará al presonaje
             }
 
             return pj;
@@ -169,7 +213,7 @@ namespace RPG
 
 
         ///////////////////////////////////////////////////////////////////////////////////////El proceso entero de las batallas
-        private static void ProcesoDePelea(Random rand, List<Personaje> listaPj, ref int peleas, ref int empate, char guardar, List<Personaje> listaJugadores, string archivoJugadores)
+        private static void ProcesoDePelea(Random rand, List<Personaje> listaPj, ref int peleas, ref int empate, char guardar, List<Personaje> listaJugadores, string archivoJugadores, RootNames names)
         {
             while (peleas > 0)
             {
@@ -177,7 +221,7 @@ namespace RPG
                 {
                     Personaje pj;
 
-                    pj = EleccionOCreacionPersonaje(archivoJugadores);
+                    pj = EleccionOCreacionPersonaje(archivoJugadores, names);
 
                     listaPj.Add(pj);
 
