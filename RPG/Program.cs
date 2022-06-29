@@ -253,13 +253,19 @@ namespace RPG
                 Console.WriteLine("\n/---------------Pelea en proceso---------------/");
                 for (int i = 0; i < 3; i++)
                 {
+                    char continuar;
+
                     Funciones.procesoDeAtaque(listaPj[0], listaPj[1]); //Primero ataca uno y luego ataca otro
+                    Console.WriteLine("\nPresione para continuar");
+                    continuar = Console.ReadKey().KeyChar;
                     if (listaPj[1].Dat.Salud <= 0) //Al finalizar un ataque, pregunto si el defensor quedó con la vida al cero, para detener la batalla
                     {
                         break;
                     }
 
                     Funciones.procesoDeAtaque(listaPj[1], listaPj[0]);
+                    Console.WriteLine("\nPresione para continuar");
+                    continuar = Console.ReadKey().KeyChar;
                     if (listaPj[0].Dat.Salud <= 0)
                     {
                         break;
@@ -312,7 +318,7 @@ namespace RPG
             ///////////////////////////////////////////////////////////////////////////////////////Cada ataque independiente
             public static void procesoDeAtaque(Personaje atacante, Personaje defensor) //Cálculos que hacen posible un ataque
             {
-                Console.WriteLine($"\nAtacante: {atacante.Dat.Apodo} \nDefensor: {defensor.Dat.Apodo}");
+                Console.WriteLine($"\n\nAtacante: {atacante.Dat.Apodo} \nDefensor: {defensor.Dat.Apodo}");
                 var rand = new Random();
 
                 float PD = atacante.Car.Destreza * atacante.Car.Fuerza * atacante.Car.Nivel; //Poder de disparo
