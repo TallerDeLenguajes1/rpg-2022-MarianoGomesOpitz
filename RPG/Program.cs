@@ -270,6 +270,11 @@ namespace RPG
                     {
                         break;
                     }
+
+                    if (i == 2)
+                    {
+                        Console.WriteLine("\nNadie ha perecido, gana aquel que posea más vida");
+                    }
                 }
 
                 if (listaPj[0].Dat.Salud == listaPj[1].Dat.Salud) //Determino al ganador
