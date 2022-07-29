@@ -294,7 +294,7 @@ namespace RPG
 
                     foreach (var item in listaPj) //Muestro quién es el que ganó la pelea
                     {
-                        Console.WriteLine($"\n\n/----------Ganador de la pelea: {item.Dat.Apodo}----------/");
+                        Console.WriteLine($"\n\n/----------Ganador de la pelea: {item.Dat.Nombre} ({item.Dat.Apodo})----------/");
                         item.Dat.Salud = 100;
                         int chance = rand.Next(2);
                         float bonus = 0;
@@ -323,7 +323,7 @@ namespace RPG
             ///////////////////////////////////////////////////////////////////////////////////////Cada ataque independiente
             public static void procesoDeAtaque(Personaje atacante, Personaje defensor) //Cálculos que hacen posible un ataque
             {
-                Console.WriteLine($"\n\nAtacante: {atacante.Dat.Apodo} \nDefensor: {defensor.Dat.Apodo}");
+                Console.WriteLine($"\n\nAtacante: {atacante.Dat.Nombre} ({atacante.Dat.Apodo}) \nDefensor: {defensor.Dat.Nombre} ({defensor.Dat.Apodo})");
                 var rand = new Random();
 
                 float PD = atacante.Car.Destreza * atacante.Car.Fuerza * atacante.Car.Nivel; //Poder de disparo
